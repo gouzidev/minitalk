@@ -25,6 +25,13 @@ int	ft_atoi(const char *str)
 	}
 	return (res * sign);
 }
+void handle_reply(int sig, siginfo_t *info, void *idk)
+{
+    if (sig == SIGUSR1)
+    {
+        write(1, "received good\n", 15);
+    }
+}
 int ft_strlen(char  *s)
 {
     int i;
@@ -40,10 +47,20 @@ int ft_strlen(char  *s)
 
 int main(int ac, char *av[])
 {
+    struct sigaction sa;
+    sa.sa_flags = SA_SIGINFO;
+    sa.sa_sigaction = handle_reply;
+    sigemptyset(&sa.sa_mask);
+
+    if (sigaction(SIGUSR1, &sa, NULL) == -1)
+    {
+        perror("sigaction");
+        exit(1);
+    }
     int pid;
     int i;
-    int len;
     int j;
+    int len;
     char *msg;
     int mask;
     mask = 128;
@@ -51,14 +68,11 @@ int main(int ac, char *av[])
     if (ac != 3 || pid <= 0)
         return 1;
     msg = av[2];
+    i = 0;
     len = ft_strlen(msg);
     i = 0;
     while (i <= len)
     {
-        if (msg[i] == '\0')
-            write(1,"\\",1);
-        else
-            write(1, &msg[i], 1);
         j = 0;
         while (j++ < 8)
         {
@@ -71,5 +85,9 @@ int main(int ac, char *av[])
         }
         mask = 128;
         i++;
+    }
+    while (1)
+    {
+        pause();
     }
 }
