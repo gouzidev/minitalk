@@ -2,7 +2,6 @@
 
 A tiny client/server IPC exercise using UNIX signals. The client encodes a message bit by bit and the server rebuilds and prints it.
 
-![Overview](./minitalk-overview.webp)
 ![Signal flow](./minitalk-signal-flow.avif)
 
 ## How it works
