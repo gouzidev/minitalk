@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <signal.h>
+
 
 void handle_signal(int sig)
 {
@@ -72,14 +74,13 @@ char	*ft_itoa(int n, int *len)
 
 
 
-int main(int ac, char *av[])
+int main()
 {
     pid_t pid = getpid();
-    int len;
     // int fd = open("pid.txt", O_RDWR | O_CREAT);
     // char *pid_str = ft_itoa(pid, &len);
     // write(fd, pid_str, len);
-    printf(" -> %d\n", pid);
+    printf("pid -> %d\n", pid);
     signal(SIGUSR1, handle_signal);
     signal(SIGUSR2, handle_signal);
     while (1)

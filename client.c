@@ -46,17 +46,20 @@ int main(int ac, char *av[])
     int j;
     char *msg;
     int mask;
+
     mask = 128;
+    if (ac != 3)
+        return(printf("error in argument count, syntax: ./client [pid] [msg]\n"), 1);
     pid = ft_atoi(av[1]);
-    if (ac != 3 || pid <= 0)
-        return 1;
+    if (pid <= 0)
+        return(printf("error in pid\n"), 1);
     msg = av[2];
     len = ft_strlen(msg);
     i = 0;
     while (i <= len)
     {
         if (msg[i] == '\0')
-            write(1,"\\",1);
+            write(1,"\n",1);
         else
             write(1, &msg[i], 1);
         j = 0;
@@ -67,7 +70,7 @@ int main(int ac, char *av[])
             else
                 kill(pid, SIGUSR2);
             usleep(1000);
-            mask = mask >> 1 ;
+            mask = mask >> 1;
         }
         mask = 128;
         i++;
